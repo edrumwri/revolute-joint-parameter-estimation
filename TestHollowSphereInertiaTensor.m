@@ -8,7 +8,7 @@ classdef TestHollowSphereInertiaTensor < matlab.unittest.TestCase
     
     methods (Test)
         function sanityTest(testCase)
-            %since this is a closed form solution
+            % since this is a closed form solution
             mass = 10;
             sphere_radius = 1;
             actSol = getHollowSphereInertiaTensor(mass, sphere_radius);

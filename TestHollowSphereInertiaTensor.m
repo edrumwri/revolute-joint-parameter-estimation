@@ -1,6 +1,7 @@
 classdef TestHollowSphereInertiaTensor < matlab.unittest.TestCase
-    % TestHollowSphereInertiaTensor Unit testing for getHollowSphereInertiaTensor
-    %   This runs a sanity test, the hollow sphere inertia matrix has a
+    % TestHollowSphereInertiaTensor: Unit testing for
+    % getHollowSphereInertiaTensor(mass, sphere_radius).
+    %   This runs a sanity test: the hollow sphere inertia matrix has a
     %   closed form solution.
     
     properties

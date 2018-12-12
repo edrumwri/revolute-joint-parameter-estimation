@@ -2,12 +2,12 @@ function revoluteConstraints = computeRevoluteJointConstraints(ui, vi, vj, pose)
 % computeRevoluteJointConstraints(ui, vi, vj, pose) computes the revolute joint 
 % constraints as spherical joint constraints with two additional constraints.
 % The two additional constraints are for vector vi and vj to be parallel. 
-%   ui is a 3x1 unit vector representing local position vector (on body i) 
+%   ui is a 3x1 unit vector representing local position vector on body i 
 %   vi is a 3x1 unit vector for the revolute joint in the body i frame.
 %   vj is a 3x1 unit vector for the revolute joint in the body j frame (fixed to the world).
 %   pose is a 7x1 vector representing the:
-%       position: values 1:3 in pose in the format x y z and
-%       orientation: values 4:7 in pose in a quaternion format w x y z
+%       position: values 1:3 in pose in the format ex ey ez and
+%       orientation: values 4:7 in pose in a quaternion format qw qx qy qz
 
     quat = pose(4:7); % quaternion components
     wRi = quat2R(quat);

@@ -1,5 +1,5 @@
 function sphericalConstraints = computeSphericalJointConstraints(ui, pose)
-% computeSphericalJointConstraints(ui, y) computes the spherical joint
+% computeSphericalJointConstraints(ui, pose) computes the spherical joint
 % constraints f = x + R * u.
 %   ui is a 3x1 local position vector (on body i) defining the joint
 %   location wrt the grasping point.

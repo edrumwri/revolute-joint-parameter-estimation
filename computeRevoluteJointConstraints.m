@@ -1,5 +1,5 @@
-function revoluteConstraints = computeRevoluteJointConstraints(ui, vi, vj,  pose)
-% computeRevoluteJointConstraints(ui, uj, quat) computes the revolute joint 
+function revoluteConstraints = computeRevoluteJointConstraints(ui, vi, vj, pose)
+% computeRevoluteJointConstraints(ui, vi, vj, pose) computes the revolute joint 
 % constraints as spherical joint constraints with two aditional constraints.
 %   ui is a 3x1 local position vector (on body i) defining the joint
 %   location wrt the grasping point.

@@ -6,11 +6,11 @@ classdef TestcomputeSphericalJointConstraints < matlab.unittest.TestCase
 
     methods (Test)   
         function testComputationIdentity(testCase)
-            % testComputationIdentity no rotation just addition of two vectors.
+            % testComputationIdentity tests computation with identity rotation.
             ui = [-1 0 0]';
             pose = [1 0 0 1 0 0 0]';
             actSol = computeSphericalJointConstraints(ui, pose);
-            expSol = pose(1:3)+ eye(3) * ui;
+            expSol = pose(1:3) + eye(3) * ui;
             testCase.verifyEqual(actSol, expSol, 'AbsTol', sqrt(eps));
         end
         

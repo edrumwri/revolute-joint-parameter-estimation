@@ -5,7 +5,7 @@ function [v1i,v2i] = computeBasisFromAxis(vi)
 %   on conditions of parallelism for a more detailed explanation on how
 %   these vectors are computed.
 
-    if any(vi(:) == 0), error('the vector should not be all zeros'); end
+    if all(vi(:) == 0), error('computeBasisFromAxis:InputIsZeros','The vector should not be all zeros'); end
     
     [x,i] = max(abs(vi));
     

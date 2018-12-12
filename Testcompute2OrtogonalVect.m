@@ -1,5 +1,5 @@
 classdef Testcompute2OrtogonalVect < matlab.unittest.TestCase
-    % Testcompute2OrtogonalVect: Unit testing for compute2OrtogonalVect.
+    % Testcompute2OrtogonalVect performs unit testing for compute2OrtogonalVect.
     %   testComputation tests the computation against a know solution.
     %   testOrtogonal tests if the 3 vectors form an ortogonal triad.
     

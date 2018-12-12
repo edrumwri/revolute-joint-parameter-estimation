@@ -5,7 +5,7 @@ function revoluteConstraints = computeRevoluteJointConstraints(ui, vi, vj, pose)
 %   location wrt the grasping point.
 %   vi is a 3x1 vector for the revolute joint in the body i frame.
 %   vj is a 3x1 vector for the revolute joint in the body j frame (fixed to the world).
-%   y is a7x1 vector representing the position and orientation of the 
+%   pose is a7x1 vector representing the position and orientation of the 
 %   grasping point in the global frame.
 
     x = pose(1:3); % position components
@@ -20,9 +20,9 @@ function revoluteConstraints = computeRevoluteJointConstraints(ui, vi, vj, pose)
     % Formulate the parallelism condition of the two vectors wvi and wvj as
     % two independent dot product equations.
     [v1iw, v2iw] = compute2OrtogonalVect(viw);
-    revoluteParallelVect = [v1iw' * vjw; v2iw' * vjw];
     
-    sphericalConstraints = x + wRi * ui;
+    revoluteParallelVect = [v1iw' * vjw; v2iw' * vjw];
+    sphericalConstraints = computeSphericalJointConstraints(ui, pose);
     
     revoluteConstraints = [sphericalConstraints; revoluteParallelVect];
 end

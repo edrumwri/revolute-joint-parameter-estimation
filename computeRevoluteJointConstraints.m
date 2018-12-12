@@ -20,9 +20,9 @@ function revoluteConstraints = computeRevoluteJointConstraints(ui, vi, vj, pose)
     % Formulate the parallelism condition of the two vectors wvi and wvj as
     % two independent dot product equations.
     [v1iw, v2iw] = compute2OrtogonalVect(viw);
-    revolute_parallel_vect = [v1iw' * vjw; v2iw' * vjw];
+    revoluteParallelVect = [v1iw' * vjw; v2iw' * vjw];
     
     sphericalConstraints = x + wRi * ui;
     
-    revoluteConstraints = [sphericalConstraints; revolute_parallel_vect];
+    revoluteConstraints = [sphericalConstraints; revoluteParallelVect];
 end

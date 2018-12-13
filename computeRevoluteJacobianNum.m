@@ -6,9 +6,9 @@ function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
 %   ui is a 3x1 vector from the center-of-mass of body i to the revolute 
 %       joint location and expressed in the body i frame 
 %   vi is a 3x1 unit vector that points along the axis of the revolute joint 
-%       in the body i frame.
+%       expressed in the body i frame.
 %   vj is a 3x1 unit vector that points along the axis of the revolute joint 
-%       in the body j frame (fixed to the world).
+%       expressed in the body j frame (fixed to the world).
 %   pose is a 7x1 vector representing the:
 %       position: values 1:3 in pose in the format ex ey ez and
 %       orientation: values 4:7 in pose in a quaternion format qw qx qy qz
@@ -34,8 +34,8 @@ function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
     quat = pose(4:7);
     N = computeN(quat);
     
-    % JRevNum * v = ?f/?q * dq/dt and dq/dt = N*v, therfore 
-    % JRevNum * v = ?f/?q * N * v, making JRevNum = ?f/?q * N
+    % JRevNum * v = df/dq * dq/dt and dq/dt = N*v, therfore 
+    % JRevNum * v = df/dq * N * v, making JRevNum = df/dq * N
     JRevNum = (fForward - fCurrent) / eps * N;    
 end
 

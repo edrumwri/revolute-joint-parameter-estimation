@@ -19,7 +19,8 @@ function revoluteConstraints = computeRevoluteJointConstraints(ui, vi, vj, pose)
 
     [v1iw, v2iw] = computeBasisFromAxis(viw);
     
-    % Revolute constraints. 
+    % Formulate the parallelism condition of the two vectors viw and vjw
+    % v1iw' * vjw  = 0 and v2iw' * vjw = 0·
     revoluteParallelVect = [v1iw' * vjw; v2iw' * vjw];
     
     sphericalConstraints = computeSphericalJointConstraints(ui, pose);

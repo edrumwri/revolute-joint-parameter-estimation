@@ -28,15 +28,13 @@ function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
         % Add result to forward f calculation.
         fForward(:, i) = computeRevoluteJointConstraints(ui, vi, vj, poseForward);
         % Add element to f calculation.
-        f(:,i) = fi;
+        f(:, i) = fi;
     end
     
     % Extract the quaternion from pose.
     quat = pose(4:7);
     N = computeN(quat);
     
-    JRevNum = (fForward - f)/ eps * N;
-
-    
+    JRevNum = (fForward - f)/ eps * N;    
 end
 

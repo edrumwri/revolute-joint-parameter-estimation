@@ -1,7 +1,7 @@
 function [fSpherical, fDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity)
 % computeSphericalJointConstraints(ui, pose, velocity) computes:
 %   fSpherical: the spherical joint constraints defined as x + R * u = 0.
-%   fDotSpherical: as the first derivative of the f using the analytical derivation.
+%   fDotSpherical: as the first derivative of fSpherical using the analytical derivation.
 %
 %   ui is a 3x1 vector from the center-of-mass of body i to the revolute 
 %   pose is a 7x1 vector representing the:
@@ -24,7 +24,7 @@ function [fSpherical, fDotSpherical] = computeSphericalJointConstraints(ui, pose
     
      % f = x + R * u, df/dt = dx/xt + dR/dt * u 
      % dx/dt = vel, dR/dt * u = angularVelTensor * R * u  
-     % therfore df/dt = vel + R * u * angularVelTensor 
+     % therfore df/dt = vel + angularVelTensor * R * u 
      fDotSpherical = vel + angularVelTensor * wRi * ui;
     else
         fDotSpherical = zeros(3,1);

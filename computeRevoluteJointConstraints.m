@@ -3,7 +3,7 @@ function [fRevolute, fDotRevolute] = computeRevoluteJointConstraints(ui, vi, vj,
 %   fRevolute as the revolute joint constraints as spherical joint constraints with 
 %       two additional constraints. The two additional constraints are for 
 %       vector vi and vj to be parallel. 
-%   fDotRevolute as the first derivative of the f using the analytical derivation.
+%   fDotRevolute as the first derivative of fRevolute using the analytical derivation.
 %
 %   ui is a 3x1 vector from the center-of-mass of body i to the revolute 
 %       joint location and expressed in the body i frame 

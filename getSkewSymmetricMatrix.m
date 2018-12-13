@@ -1,6 +1,5 @@
 function skewR = getSkewSymmetricMatrix(v)
-% getSkewSymmetricMatrix(y) generate a skew 3x3 symmetric  marix out a 
-% vector of v.
+% getSkewSymmetricMatrix(y) generate a 3x3 skew symmetric from 3-dimensional vector v.
 %   v contains 3 elements vx vy vz
 
 skewR = [   0    -v(3)    v(2); 

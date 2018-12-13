@@ -17,7 +17,8 @@ function [fRevolute, fDotRevolute] = computeRevoluteJointConstraints(ui, vi, vj,
 %   velocity is a 6x1 OPTIONAL vector containing:
 %       velocity: values 1:3 in the format vx vy vz
 %       angular velocity: values 4:6 in the format wx wy wz
-%       If velocity is not passed the fDotRevolute is zeros(5,1);
+%       If velocity is not provided then fDotRevolute will be zeros(5,1) on
+%       return.
 
     quat = pose(4:7); % quaternion components
     wRi = quat2R(quat);
@@ -37,14 +38,14 @@ function [fRevolute, fDotRevolute] = computeRevoluteJointConstraints(ui, vi, vj,
     fRevolute = [fSpherical; revoluteParallelVect];
     
     if exist('velocity','var') 
-     % the velocity is passed as an argument.
-     angularVelTensor = getSkewSymmetricMatrix(velocity(4:6));
+        % the velocity is passed as an argument.
+        angularVelTensor = getSkewSymmetricMatrix(velocity(4:6));
     
-     % f = viw' * vjw , then 
-     % df/dt =  viw' * angularVelTensor * vjw
-     revVectorsDot = viw' * angularVelTensor *  vjw;
-     [fSpherical fDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity);
-     fDotRevolute = [fDotSpherical; revVectorsDot; revVectorsDot];
+        % f = viw' * vjw , then 
+        % df/dt =  viw' * angularVelTensor * vjw
+        revVectorsDot = viw' * angularVelTensor *  vjw;
+        [fSpherical fDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity);
+        fDotRevolute = [fDotSpherical; revVectorsDot; revVectorsDot];
     else
         fDotRevolute = zeros(5,1);
     end

@@ -1,10 +1,11 @@
-function NSpherical = computeN(quat)
+function N = computeN(quat)
 % computeN(quat) returns matrix N used in calculation of the jacobian.
+%   quat is a 4 elements vector quaternion in format qw qx qy qz
 %
-%   Returns 7x6 matrix [eye(3)     zeros(3); 
-%                       zeros(4,3) NikraveshG']
+%   Returns 7x6 matrix [  eye(3)        zeros(3); 
+%                       zeros(4, 3)   0.5 * NikraveshG']
 
-    NG = 1/2 * computeNikraveshG(quat);
-    NSpherical = [eye(3) zeros(3); zeros(4,3) NG'];
+    NG = 0.5 * computeNikraveshG(quat);
+    N = [eye(3) zeros(3); zeros(4, 3) NG'];
 end
 

@@ -30,7 +30,7 @@ classdef TestcomputeRevoluteJointConstraints < matlab.unittest.TestCase
         
         function testNoVelocityInputFDot(testCase)
            % testNoVelocityInputFDot tests if the function returns zeros 
-            %if no velocity for fDot.
+            % if no velocity for fDot.
             ui = [-1 0 0]';
             vi = [0 1 0]'; 
             vj = [0 1 0]'; 

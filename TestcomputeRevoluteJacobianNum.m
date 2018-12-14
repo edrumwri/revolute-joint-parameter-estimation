@@ -14,7 +14,7 @@ classdef TestcomputeRevoluteJacobianNum < matlab.unittest.TestCase
             velocity = [1 2 3 4 5 6]';
             actSol = computeRevoluteJacobianNum(ui, vi, vj, pose, 1e-6) * velocity;
             [fRevolute, expSol] = computeRevoluteJointConstraints(ui, vi, vj, pose, velocity);
-            testCase.verifyEqual(actSol, expSol, 'AbsTol', 500*sqrt(eps));
+            testCase.verifyEqual(actSol, expSol, 'AbsTol',6.5e-6);
         end
         
         function testComputation90Rotation(testCase)
@@ -27,7 +27,7 @@ classdef TestcomputeRevoluteJacobianNum < matlab.unittest.TestCase
             velocity = [1 2 3 4 5 6]';
             actSol = computeRevoluteJacobianNum(ui, vi, vj, pose, 1e-6) * velocity;
             [fRevolute, expSol] = computeRevoluteJointConstraints(ui, vi, vj, pose, velocity);
-            testCase.verifyEqual(actSol, expSol, 'AbsTol', 400*sqrt(eps));
+            testCase.verifyEqual(actSol, expSol, 'AbsTol', 5e-6);
         end       
     end
 end

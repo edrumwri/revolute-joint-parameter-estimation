@@ -26,7 +26,7 @@ classdef TestcomputeSphericalJointConstraints < matlab.unittest.TestCase
         
         function testNoVelocityInputFDot(testCase)
            % testNoVelocityInputFDot tests if the function returns zeros 
-            %if no velocity for fDot.
+            % if no velocity for fDot.
             ui = [-1 0 0]';
             pose = [1 0 0 0.7071068 0 0.7071068 0]';
             [fSpherical,actSol] = computeSphericalJointConstraints(ui, pose);

@@ -1,8 +1,12 @@
-function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
-% computeRevoluteJacobianNum(ui, vi, vj, pose, eps) returns a 5x6 matrix that estimates 
-% numerically the jacobian for the spherical joint.
-%   Uses the forward-difference formula to calculate the jacobian using 
-%   computeRevoluteJointConstraints function
+function [JRevNum, JDotRevNum] = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
+% computeRevoluteJacobianNum(ui, vi, vj, pose, eps) returns 
+%   JRevNum a 5x6 matrix that estimates numerically the jacobian for the 
+%        revolute joint.
+%   JDotRevNum a 5x6 matrix that estimates numerically the derived jacobian
+%        for the revolute joint.
+%   
+%   Uses the forward-difference formula to calculate the jacobian and the 
+%       derived jacobian using computeRevoluteJointConstraints function
 %   ui is a 3x1 vector from the center-of-mass of body i to the revolute 
 %       joint location and expressed in the body i frame 
 %   vi is a 3x1 unit vector that points along the axis of the revolute joint 
@@ -18,6 +22,7 @@ function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
     % Allocate space for forward differences calculations.
     col = length(pose);
     fForward = zeros(5, col);
+    fBack = zeros(5, col);
     
     % Precompute the value for the constraints with no perturbance.
     fCurrent = computeRevoluteJointConstraints(ui, vi, vj, pose);
@@ -28,6 +33,10 @@ function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
         poseForward(i) =  poseForward(i) + eps;
         % Add result to forward f calculation.
         fForward(:, i) = computeRevoluteJointConstraints(ui, vi, vj, poseForward);
+        
+        poseBack = pose;
+        poseBack(i) = poseBack(i) - eps;
+        fBack(:,i) = computeRevoluteJointConstraints(ui, vi, vj, poseBack);
     end
     
     % Extract the quaternion from pose.
@@ -36,6 +45,8 @@ function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
     
     % JRevNum * v = df/dq * dq/dt and dq/dt = N*v, therfore 
     % JRevNum * v = df/dq * N * v, making JRevNum = df/dq * N
-    JRevNum = (fForward - fCurrent) / eps * N;    
+    JRevNum = (fForward - fCurrent) / eps * N;   
+    
+    JDotRevNum = (fForward - 2 * fCurrent + fBack) / eps^2 * N;
 end
 

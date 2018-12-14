@@ -1,12 +1,12 @@
 function JRevDot = computeRevoluteJacobianDot(ui, vi, vj, quat, quatDot)
 % computeRevoluteJacobianDot analytical computation of the dot{jacobian}
 % for the revolute joint.
-%   The jacobian is = [  eye(3)      -skew(wRi * ui); 
+%   The jacobian is = [eye(3)      -skew(wRi * ui); 
 %                      zeros(1,3)   v1i' * wRi' * skew(vj);
-%                      zeros(1,3)   v2i' * wRi' * skew(vj);
+%                      zeros(1,3)   v2i' * wRi' * skew(vj)]
 %
 %   where wRi = qt2rot(quat) and vectors vi1 and vi2 form the orthogonal 
-%   triad vi, v1i and v2i
+%   triad vi, v1i and v2i.
 
   JSphericalDot = computeSphericalJacobianDot(ui, quat, quatDot);
   

@@ -27,7 +27,7 @@ classdef TestcomputeRevoluteJacobianNum < matlab.unittest.TestCase
             velocity = [1 2 3 4 5 6]';
             actSol = computeRevoluteJacobianNum(ui, vi, vj, pose, 1e-6) * velocity;
             [fRevolute, expSol] = computeRevoluteJointConstraints(ui, vi, vj, pose, velocity);
-            testCase.verifyEqual(actSol, expSol, 'AbsTol', 100*sqrt(eps));
+            testCase.verifyEqual(actSol, expSol, 'AbsTol', 400*sqrt(eps));
         end       
     end
 end

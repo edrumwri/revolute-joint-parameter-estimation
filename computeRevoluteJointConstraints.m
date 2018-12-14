@@ -43,8 +43,8 @@ function [fRevolute, fDotRevolute] = computeRevoluteJointConstraints(ui, vi, vj,
     
         [fSpherical fDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity);
         % constraints for vi and vj vectors are in the form: f = v1iw' * vjw , then 
-        % df/dt =  v1iw' * angularVelTensor * vjw, 
-        fDotRevolute = [fDotSpherical; v1iw' * angularVelTensor *  vjw; v2iw' * angularVelTensor *  vjw];
+        % df/dt =  v1iw' * angularVelTensor' * vjw, angularVelTensor' = - angularVelTensor
+        fDotRevolute = [fDotSpherical; v1iw' * angularVelTensor' *  vjw; v2iw' * angularVelTensor' *  vjw];
     else
         fDotRevolute = zeros(5,1);
     end

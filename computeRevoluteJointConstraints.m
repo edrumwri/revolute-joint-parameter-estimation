@@ -41,7 +41,7 @@ function [fRevolute, fDotRevolute] = computeRevoluteJointConstraints(ui, vi, vj,
         % the velocity is passed as an argument.
         angularVelTensor = getSkewSymmetricMatrix(velocity(4:6));
     
-        [fSpherical fDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity);
+        [fSpherical, fDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity);
         % constraints for vi and vj vectors are in the form: f = v1iw' * vjw , then 
         % df/dt =  v1iw' * angularVelTensor' * vjw, angularVelTensor' = - angularVelTensor
         fDotRevolute = [fDotSpherical; v1iw' * angularVelTensor' *  vjw; v2iw' * angularVelTensor' *  vjw];

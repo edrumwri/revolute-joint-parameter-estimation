@@ -1,6 +1,6 @@
 function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
 % computeRevoluteJacobianNum(ui, vi, vj, pose, eps) returns a 5x6 matrix that estimates 
-% numerically the jacobian for the spherical joint.
+% numerically the jacobian for the revolute joint.
 %   Uses the forward-difference formula to calculate the jacobian using 
 %   computeRevoluteJointConstraints function
 %   ui is a 3x1 vector from the center-of-mass of body i to the revolute 

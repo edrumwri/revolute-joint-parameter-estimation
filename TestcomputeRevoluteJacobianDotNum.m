@@ -17,8 +17,8 @@ classdef TestcomputeRevoluteJacobianDotNum  < matlab.unittest.TestCase
             acceleration = [2 3 4 5 6 7]';
             quatDot = computeQuatDot(pose(4:7), velocity(4:6));
             actSol = computeRevoluteJacobianDotNum(ui, vi, vj, pose, velocity, acceleration, 1e-6);
-            [fRevolute, fDRevolute, expSol] = computeRevoluteJacobianDot(ui, vi, vj, pose(4:7), quatDot) * velocity;
-            testCase.verifyEqual(actSol, expSol, 'AbsTol', 1e-6);
+            expSol = computeRevoluteJacobianDot(ui, vi, vj, pose(4:7), quatDot) * velocity;
+            testCase.verifyEqual(actSol, expSol, 'AbsTol', 5e-6);
         end
     end
 end

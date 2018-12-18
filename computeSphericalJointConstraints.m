@@ -37,15 +37,15 @@ function [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointCons
         
         if exist('acceleration','var')
             % for the revolute constraints derivative we derive 
-            % \dot{f} = vel - skew(wRi * ui) * angularVel, which is 
-            % \ddot{f} = \dot{vel} - \dot{skew(wRi * ui)}  * angularVel 
-            %           - skew(wRi * ui) * \dot{angularVel}
-            skewRu = getSkewSymmetricMatrix(wRi * ui);
+            % \dot{f} = vel + w x (wRi * ui) , which is 
+            % \ddot{f} = \dot{vel} + \dot{w} x (wRi * ui)  
+            %           + w x (w x(wRi * ui)).
+            uiw = wRi * ui;
             vDot = acceleration(1:3);
             angularVel = velocity(4:6);
             angularVelDot = acceleration(4:6);
-            % this formula needs to be updated (wrong wright now)
-            fDDotSpherical = vDot + skewRu * angularVel * angularVelTensor - skewRu * angularVelDot;
+           
+            fDDotSpherical = vDot + cross(angularVelDot, uiw) + cross(angularVel, cross(angularVel, uiw));
         
         else
             fDDotSpherical = zeros(3,1);

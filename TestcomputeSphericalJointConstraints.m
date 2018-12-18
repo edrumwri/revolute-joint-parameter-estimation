@@ -33,6 +33,17 @@ classdef TestcomputeSphericalJointConstraints < matlab.unittest.TestCase
             expSol = zeros(3,1);
             testCase.verifyEqual(actSol, expSol, 'AbsTol', sqrt(eps));
         end
-    end
+        
+        function testNoVelocityNoAccelerationInputFDDot(testCase)
+           % testNoVelocityNoAccelerationInputFDDot tests if the function returns zeros 
+            % if no acceleration for fDDot.
+            ui = [-1 0 0]';
+            pose = [1 0 0 0.7071068 0 0.7071068 0]';
+            [fSpherical,fDSpherical, actSol] = computeSphericalJointConstraints(ui, pose);
+            expSol = zeros(3,1);
+            testCase.verifyEqual(actSol, expSol, 'AbsTol', sqrt(eps));
+        end
+        
+    end   
 end
 

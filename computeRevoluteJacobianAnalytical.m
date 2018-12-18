@@ -1,5 +1,5 @@
 function JRev = computeRevoluteJacobianAnalytical(ui, vi, vj, quat)
-% computeRevoluteJacobianAnalytica analytical computation of the jacobian
+% computeRevoluteJacobianAnalytical analytical computation of the jacobian
 % for the revolute joint.
 %   JRev = [eye(3)      -skew(wRi * ui); % Spherical Jacobian
 %           zeros(1,3)   v1i' * wRi' * skew(vj);

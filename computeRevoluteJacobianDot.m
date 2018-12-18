@@ -11,7 +11,7 @@ function JRevDot = computeRevoluteJacobianDot(ui, vi, vj, quat, quatDot)
   JSphericalDot = computeSphericalJacobianDot(ui, quat, quatDot);
   
   [v1i, v2i] = computeBasisFromAxis(vi);   
-    
+  
   JRevConstDot1 = computeRevConstrDot(v1i, vj, quat, quatDot);
   JRevConstDot2 = computeRevConstrDot(v2i, vj, quat, quatDot);
     

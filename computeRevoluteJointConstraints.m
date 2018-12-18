@@ -1,4 +1,4 @@
-function [fRevolute, fDotRevolute] = computeRevoluteJointConstraints(ui, vi, vj, pose, velocity)
+function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstraints(ui, vi, vj, pose, velocity, acceleration)
 % computeRevoluteJointConstraints(ui, vi, vj, pose, velocity) computes:
 %   fRevolute as the revolute joint constraints as spherical joint constraints with 
 %       two additional constraints. The two additional constraints are for 
@@ -18,6 +18,13 @@ function [fRevolute, fDotRevolute] = computeRevoluteJointConstraints(ui, vi, vj,
 %       velocity: values 1:3 in the format vx vy vz
 %       angular velocity: values 4:6 in the format wx wy wz
 %       If velocity is not provided then fDotRevolute will be zeros(5,1) on
+%       return.
+%   acceleration is a 6x1 OPTIONAL vector containing:
+%       translational accelerations: values 1:3 in the format \dot{vx}
+%       \dot{vy} \dot{vz}
+%       angular accelerations: values 4:6 in the format \dot{wx} \dot{wy}
+%       \dot{wz}
+%       If acceleration is not provided then fDDotSpherical will be zeros(5,1) on
 %       return.
 
     quat = pose(4:7); % quaternion components
@@ -45,8 +52,26 @@ function [fRevolute, fDotRevolute] = computeRevoluteJointConstraints(ui, vi, vj,
         % constraints for vi and vj vectors are in the form: f = v1iw' * vjw , then 
         % df/dt =  v1iw' * angularVelTensor' * vjw, angularVelTensor' = - angularVelTensor
         fDotRevolute = [fDotSpherical; v1iw' * angularVelTensor' *  vjw; v2iw' * angularVelTensor' *  vjw];
+        
+        if exist('acceleration','var')
+            [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity, acceleration);
+            skewvjw = getSkewSymmetricMatrix(vjw);
+            angularVel = velocity(4:6);
+            angularVelDot = acceleration(4:6);
+            % for the revolute constraints derivative we derive 
+            % \dot{f} = (wRi * vxi)' * skew(vjw) * angularVel, which is 
+            % \ddot{f} = (wRi * vxi)' * skew(angularVel) * skew(vjw) * angularVel 
+            %           + (wRi * vxi)' * skew(vjw) * \dot{angulatVel}
+            fDDotRevolute = [fDDotSpherical, ... 
+                v1iw' *  angularVelTensor * skewvjw * angularVel + v1iw' * skewvjw * angularVelDot,...
+                v2iw' *  angularVelTensor * skewvjw * angularVel + v2iw' * skewvjw * angularVelDot];
+        else
+            fDDotRevolute = zeros(5,1);
+        end
     else
         fDotRevolute = zeros(5,1);
     end
+    
+    
         
 end

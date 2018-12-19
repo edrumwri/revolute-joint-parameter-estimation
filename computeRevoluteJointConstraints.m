@@ -3,7 +3,8 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
 %   fRevolute as the revolute joint constraints as spherical joint constraints with 
 %       two additional constraints. The two additional constraints are for 
 %       vector vi and vj to be parallel. 
-%   fDotRevolute as the first derivative of fRevolute using the analytical derivation.
+%   fDotRevolute as the first derivative of fRevolute using the analytical derivation. 
+%   fDDotRevolute as the second derivative of fRevolute using the analytical derivation.
 %
 %   ui is a 3x1 vector from the center-of-mass of body i to the revolute 
 %       joint location and expressed in the body i frame 
@@ -44,7 +45,7 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
     fSpherical = computeSphericalJointConstraints(ui, pose);
     fRevolute = [fSpherical; revoluteParallelVect];
     
-    if exist('velocity','var') 
+    if exist('velocity', 'var') 
         % the velocity is passed as an argument.
         angularVelTensor = getSkewSymmetricMatrix(velocity(4:6));
     
@@ -53,12 +54,12 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
         % df/dt =  v1iw' * angularVelTensor' * vjw, angularVelTensor' = - angularVelTensor
         fDotRevolute = [fDotSpherical; v1iw' * angularVelTensor' *  vjw; v2iw' * angularVelTensor' *  vjw];
         
-        if exist('acceleration','var')
+        if exist('acceleration', 'var')
             [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity, acceleration);
             skewvjw = getSkewSymmetricMatrix(vjw);
             angularVel = velocity(4:6);
             angularVelDot = acceleration(4:6);
-            % for the revolute constraints derivative we derive 
+            % for the revolute constraints' derivative we derive 
             % \dot{f} = (wRi * vxi)' * skew(vjw) * angularVel, which is 
             % \ddot{f} = (wRi * vxi)' * skew(angularVel) * skew(vjw) * angularVel 
             %           + (wRi * vxi)' * skew(vjw) * \dot{angulatVel}

@@ -35,19 +35,19 @@ classdef TestcomputeRevoluteJointConstraints < matlab.unittest.TestCase
             vi = [0 1 0]'; 
             vj = [0 1 0]'; 
             pose = [1 0 0 0.7071068 0 0.7071068 0]';
-            [fRev,actSol] = computeRevoluteJointConstraints(ui, vi, vj, pose);
+            [fRev, actSol] = computeRevoluteJointConstraints(ui, vi, vj, pose);
             expSol = zeros(5,1);
             testCase.verifyEqual(actSol, expSol, 'AbsTol', sqrt(eps));
         end
         
-        function testNoVelocityNoAccelerationInputFDDot(testCase)
-           % testNoVelocityNoAccelerationInputFDDot tests if the function returns zeros 
+        function testNoAccelerationInputFDDot(testCase)
+           % testNoAccelerationInputFDDot tests if the function returns zeros 
             % if no acceleration for fDDot.
             ui = [-1 0 0]';
             vi = [0 1 0]'; 
             vj = [0 1 0]'; 
             pose = [1 0 0 0.7071068 0 0.7071068 0]';
-            [fRev,fDRev, actSol] = computeRevoluteJointConstraints(ui, vi, vj, pose);
+            [fRev, fDRev, actSol] = computeRevoluteJointConstraints(ui, vi, vj, pose);
             expSol = zeros(5,1);
             testCase.verifyEqual(actSol, expSol, 'AbsTol', sqrt(eps));
         end

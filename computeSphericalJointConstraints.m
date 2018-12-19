@@ -2,6 +2,7 @@ function [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointCons
 % computeSphericalJointConstraints(ui, pose, velocity) computes:
 %   fSpherical: the spherical joint constraints defined as x + R * u = 0.
 %   fDotSpherical: as the first derivative of fSpherical using the analytical derivation.
+%   fDDotSpherical: as the second derivative of fSpherical using the analytical derivation.
 %
 %   ui is a 3x1 vector from the center-of-mass of body i to the revolute 
 %   pose is a 7x1 vector representing the:
@@ -25,7 +26,7 @@ function [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointCons
     wRi = quat2R(quat);
     fSpherical = x + wRi * ui;
     
-    if exist('velocity','var')
+    if exist('velocity', 'var')
         % the velocity is passed as an argument.
         vel = velocity(1:3);
         angularVelTensor = getSkewSymmetricMatrix(velocity(4:6));
@@ -35,17 +36,17 @@ function [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointCons
         % therfore df/dt = vel + angularVelTensor * R * u 
         fDotSpherical = vel + angularVelTensor * wRi * ui;    
         
-        if exist('acceleration','var')
+        if exist('acceleration', 'var')
             % for the revolute constraints derivative we derive 
             % \dot{f} = vel + w x (wRi * ui) , which is 
             % \ddot{f} = \dot{vel} + \dot{w} x (wRi * ui)  
-            %           + w x (w x(wRi * ui)).
-            uiw = wRi * ui;
+            %           + w x (w x (wRi * ui)).
+            uw = wRi * ui;
             vDot = acceleration(1:3);
             angularVel = velocity(4:6);
             angularVelDot = acceleration(4:6);
            
-            fDDotSpherical = vDot + cross(angularVelDot, uiw) + cross(angularVel, cross(angularVel, uiw));
+            fDDotSpherical = vDot + cross(angularVelDot, uw) + cross(angularVel, cross(angularVel, uw));
         
         else
             fDDotSpherical = zeros(3,1);

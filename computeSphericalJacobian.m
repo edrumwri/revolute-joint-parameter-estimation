@@ -1,5 +1,5 @@
-function JSpherical = computeSphericalJacobianAnalytical(ui, quat)
-% computeSphericalJacobianAnalytical analytical computation of the jacobian
+function JSpherical = computeSphericalJacobian(ui, quat)
+% computeSphericalJacobian analytical computation of the jacobian
 % for the spherical joint.
 % JSpherical = [eye(3) -skew(wRi * ui)]
 

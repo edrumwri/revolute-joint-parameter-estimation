@@ -1,5 +1,5 @@
-classdef TestcomputeRevoluteJacobianNum < matlab.unittest.TestCase
-    % TestcomputeRevoluteJacobianNum performs unit testing for computeRevoluteJacobianNum
+classdef TestcomputeRevoluteJacobianDotV < matlab.unittest.TestCase
+    % TestcomputeRevoluteJacobianDotV performs unit testing for computeRevoluteJacobianNum
     
     properties
     end
@@ -12,7 +12,7 @@ classdef TestcomputeRevoluteJacobianNum < matlab.unittest.TestCase
             vi = [0 1 0]'; 
             vj = [0 1 0]';  
             velocity = [1 2 3 4 5 6]';
-            actSol = computeRevoluteJacobianNum(ui, vi, vj, pose, 1e-6) * velocity;
+            actSol = computeRevoluteJacobianDotV(ui, vi, vj, pose, 1e-6) * velocity;
             [fRevolute, expSol] = computeRevoluteJointConstraints(ui, vi, vj, pose, velocity);
             testCase.verifyEqual(actSol, expSol, 'AbsTol',6.5e-6);
         end
@@ -25,7 +25,7 @@ classdef TestcomputeRevoluteJacobianNum < matlab.unittest.TestCase
             vi = [0 1 0]'; 
             vj = [0 1 0]';  
             velocity = [1 2 3 4 5 6]';
-            actSol = computeRevoluteJacobianNum(ui, vi, vj, pose, 1e-6) * velocity;
+            actSol = computeRevoluteJacobianDotV(ui, vi, vj, pose, 1e-6) * velocity;
             [fRevolute, expSol] = computeRevoluteJointConstraints(ui, vi, vj, pose, velocity);
             testCase.verifyEqual(actSol, expSol, 'AbsTol', 5e-6);
         end       

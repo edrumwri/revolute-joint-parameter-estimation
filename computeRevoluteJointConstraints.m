@@ -3,8 +3,8 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
 %   fRevolute as the revolute joint constraints as spherical joint constraints with 
 %       two additional constraints. The two additional constraints are for 
 %       vector vi and vj to be parallel. 
-%   fDotRevolute as the first derivative of fRevolute using the analytical derivation. 
-%   fDDotRevolute as the second derivative of fRevolute using the analytical derivation.
+%   fDotRevolute as the first derivative of fRevolute. 
+%   fDDotRevolute as the second derivative of fRevolute.
 %
 %   ui is a 3x1 vector from the center-of-mass of body i to the revolute 
 %       joint location and expressed in the body i frame 
@@ -49,25 +49,30 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
     
     if exist('velocity', 'var') 
         % the velocity is passed as an argument.
-        angularVelTensor = getSkewSymmetricMatrix(velocity(4:6));
+        angularVel = velocity(4:6);
     
         [fSpherical, fDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity);
-        % constraints for vi and vj vectors are in the form: f = v1iw' * vjw , then 
-        % df/dt =  v1iw' * angularVelTensor' * vjw, angularVelTensor' = - angularVelTensor
-        fDotRevolute = [fDotSpherical; v1iw' * angularVelTensor' *  vjw; v2iw' * angularVelTensor' *  vjw];
+        % constraints for vxi (v1i and v2i) and vj vectors are in the form: 
+        % f = vjw' * vxiw, where vxiw = wRi * vxi
+        % \dot{f} = vjw' *  (\dot{wRi} * vxi)  
+        %         = vjw' * w x (wRi * vxi) 
+        %         = vjw' * w x vxiw 
+        % Derivation for vxi stands for either v1i or v2i.
+        
+        fDotRevolute = [fDotSpherical; vjw' * cross(angularVel,v1iw); vjw' * cross(angularVel,v2iw)];
         
         if exist('acceleration', 'var')
             [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity, acceleration);
-            skewvjw = getSkewSymmetricMatrix(vjw);
-            angularVel = velocity(4:6);
             angularVelDot = acceleration(4:6);
             % for the revolute constraints' derivative we derive 
-            % \dot{f} = (wRi * vxi)' * skew(vjw) * angularVel, which is 
-            % \ddot{f} = (wRi * vxi)' * skew(angularVel) * skew(vjw) * angularVel 
-            %           + (wRi * vxi)' * skew(vjw) * \dot{angulatVel}
-            fDDotRevolute = [fDDotSpherical; ... 
-                v1iw' *  angularVelTensor * skewvjw * angularVel + v1iw' * skewvjw * angularVelDot;...
-                v2iw' *  angularVelTensor * skewvjw * angularVel + v2iw' * skewvjw * angularVelDot];
+            % \dot{f} = vjw' * w x (wRi * vxi) which is 
+            % \ddot{f} = vjw' * \dot{w} x (wRi * vxi) 
+            %          + vjw' * w x (w x (wRi * vxi))
+            % Derivation for vxi stands for either v1i or v2i.
+             
+            fDDotRevolute = [fDDotSpherical; ...
+               vjw' * cross(angularVelDot, v1iw) + vjw' * cross(angularVel, cross(angularVel, v1iw)); ...
+               vjw' * cross(angularVelDot, v2iw) + vjw' * cross(angularVel, cross(angularVel, v2iw))];
         end
     end       
 end

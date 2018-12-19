@@ -1,8 +1,8 @@
 function JSphericalDotV = computeSphericalJacobianDotV(ui, quat, quatDot, velocity)
-% computeSphericalJacobianDotV analytical computation of the
-% \dot{jacobian} * V
+% computeSphericalJacobianDotV analytical computation of the \dot{jacobian} * V
 % for the spherical joint.
-%   The jacobian is = [eye(3) -skew(R * ui)], where R = qt2rot(quat)
+%   The jacobian is [eye(3) -skew(R * ui)], where R = qt2rot(quat)
+%   This derivation comes from Mathematica notebook JDotSpherical.nb
 
  qw = quat(1); qx = quat(2); qy = quat(3); qz = quat(4); 
  qwDot = quatDot(1); qxDot = quatDot(2); qyDot = quatDot(3); qzDot = quatDot(4); 

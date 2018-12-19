@@ -1,27 +1,32 @@
 function JRev = computeRevoluteJacobian(ui, vi, vj, quat)
 % computeRevoluteJacobian analytical computation of the jacobian
 % for the revolute joint.
-%   JRev = [eye(3)      -skew(wRi * ui); % Spherical Jacobian
-%           zeros(1,3)  v1i' * wRi' * skew(vj);
-%           zeros(1,3)  v2i' * wRi' * skew(vj)]
+%   The revolute constraint is f = vjw' * vxiw, where vxiw = wRi * vxi
+% \dot{f} = vjw' *  (\dot{wRi} * vxi)  
+%         = vjw' * w x (wRi * vxi), using a x b = skew(b)' * a
+%         = vjw' * skew(wRi * vxi)' * w
+%   The revolute constraint derivation for vxi stands for either v1i or v2i.
+
+%   JRev = [eye(3)     -skew(wRi * ui); ...        % Spherical Jacobian
+%           zeros(1,3) vjw' * skew(wRi * v1i)'; ...
+%           zeros(1,3) vjw' * skew(wRi * v2i)']
 %
 %   where wRi = qt2rot(quat) and vectors vi1 and vi2 form the orthogonal 
 %   triad vi, v1i and v2i
 %
-%   The revolute constraint is f = (wRi * vxi)' * vjw , 
-%   \dot{f} = vxi' * \dot{wRi'} * vjw 
-%     = vxi' * wRi' * skew(w)' * vjw
-%     = vxi' * wRi' * -skew(w) * vjw
-%     = vxi' * wRi' * skew(vjw) * w
+%   Since there are no velocity components in the \dot{f} the first 3 terms are 0
+%   and the rest are the angular velocity terms  vjw' * skew(vxiw)
+%   for the revolute constraints in the resulting jacobian. 
 
- JSpherical = computeSphericalJacobian(ui, quat);
+JSpherical = computeSphericalJacobian(ui, quat);
  
  wRi = qt2rot(quat);
  [v1i, v2i] = computeBasisFromAxis(vi);
- skew_vj = getSkewSymmetricMatrix(vj);
+ skew_v1iw = getSkewSymmetricMatrix(wRi * v1i);
+ skew_v2iw = getSkewSymmetricMatrix(wRi * v2i);
  
- JRev = [JSpherical;
-         zeros(1,3) v1i' * wRi' * skew_vj;
-         zeros(1,3) v2i' * wRi' * skew_vj];
+ JRev = [JSpherical; ...
+         zeros(1,3) vj' * skew_v1iw';...
+         zeros(1,3) vj' * skew_v2iw'];
 end
 

@@ -18,7 +18,7 @@ classdef TestcomputeRevoluteJacobianDotV  < matlab.unittest.TestCase
             quatDot = computeQuatDot(pose(4:7), velocity(4:6));
             actSol = computeRevoluteJacobianDotV(ui, vi, vj, pose, velocity, acceleration);
             expSol = computeRevoluteJacobianDotVAnalytical(ui, vi, vj, pose(4:7), quatDot, velocity);
-            testCase.verifyEqual(actSol, expSol, 'AbsTol', 5e-6);
+            testCase.verifyEqual(actSol, expSol, 'AbsTol', 1e-6);
         end
         
         function testNoRotation(testCase)
@@ -32,7 +32,7 @@ classdef TestcomputeRevoluteJacobianDotV  < matlab.unittest.TestCase
             quatDot = computeQuatDot(pose(4:7), velocity(4:6));
             actSol = computeRevoluteJacobianDotV(ui, vi, vj, pose, velocity, acceleration);
             expSol = computeRevoluteJacobianDotVAnalytical(ui, vi, vj, pose(4:7), quatDot, velocity);
-            testCase.verifyEqual(actSol, expSol, 'AbsTol', 7.5e-6);
+            testCase.verifyEqual(actSol, expSol, 'AbsTol', 1e-6);
         end
     end
 end

@@ -24,6 +24,7 @@ end
 
 function JRevConstrDot = computeRevConstrDot(vxi, vj, quat, quatDot)
 % Uses the analytical formulation to compute the dot constraint.
+% This derivation comes from Mathematica notebook JDotRev.nb
 
   qw = quat(1); qx = quat(2); qy = quat(3); qz = quat(4); 
   qwDot = quatDot(1); qxDot = quatDot(2); qyDot = quatDot(3); qzDot = quatDot(4);

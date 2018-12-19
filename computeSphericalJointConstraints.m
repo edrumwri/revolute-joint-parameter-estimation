@@ -26,6 +26,9 @@ function [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointCons
     wRi = quat2R(quat);
     fSpherical = x + wRi * ui;
     
+    fDotSpherical = zeros(3,1);
+     fDDotSpherical = zeros(3,1);
+    
     if exist('velocity', 'var')
         % the velocity is passed as an argument.
         vel = velocity(1:3);
@@ -47,15 +50,7 @@ function [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointCons
             angularVelDot = acceleration(4:6);
            
             fDDotSpherical = vDot + cross(angularVelDot, uw) + cross(angularVel, cross(angularVel, uw));
-        
-        else
-            fDDotSpherical = zeros(3,1);
-        end
-    else
-        fDotSpherical = zeros(3,1);
-    end
-    
-    
-    
+        end 
+    end    
 end
 

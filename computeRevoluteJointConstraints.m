@@ -44,6 +44,8 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
      
     fSpherical = computeSphericalJointConstraints(ui, pose);
     fRevolute = [fSpherical; revoluteParallelVect];
+    fDotRevolute = zeros(5,1);
+    fDDotRevolute = zeros(5,1);
     
     if exist('velocity', 'var') 
         % the velocity is passed as an argument.
@@ -66,13 +68,6 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
             fDDotRevolute = [fDDotSpherical; ... 
                 v1iw' *  angularVelTensor * skewvjw * angularVel + v1iw' * skewvjw * angularVelDot;...
                 v2iw' *  angularVelTensor * skewvjw * angularVel + v2iw' * skewvjw * angularVelDot];
-        else
-            fDDotRevolute = zeros(5,1);
         end
-    else
-        fDotRevolute = zeros(5,1);
-    end
-    
-    
-        
+    end       
 end

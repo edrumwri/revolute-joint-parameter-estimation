@@ -17,7 +17,7 @@ classdef TestcomputeRevoluteJacobianDotV  < matlab.unittest.TestCase
             acceleration = [2 3 4 5 6 7]';
             quatDot = computeQuatDot(pose(4:7), velocity(4:6));
             actSol = computeRevoluteJacobianDotV(ui, vi, vj, pose, velocity, acceleration);
-            expSol = computeRevoluteJacobianDot(ui, vi, vj, pose(4:7), quatDot) * velocity;
+            expSol = computeRevoluteJacobianDotVAnalytical(ui, vi, vj, pose(4:7), quatDot, velocity);
             testCase.verifyEqual(actSol, expSol, 'AbsTol', 5e-6);
         end
         
@@ -30,8 +30,8 @@ classdef TestcomputeRevoluteJacobianDotV  < matlab.unittest.TestCase
             velocity = [1 2 3 4 5 6]';
             acceleration = [2 3 4 5 6 7]';
             quatDot = computeQuatDot(pose(4:7), velocity(4:6));
-            actSol = computeRevoluteJacobianDotV(ui, vi, vj, pose, velocity, acceleration, 1e-6);
-            expSol = computeRevoluteJacobianDot(ui, vi, vj, pose(4:7), quatDot) * velocity;
+            actSol = computeRevoluteJacobianDotV(ui, vi, vj, pose, velocity, acceleration);
+            expSol = computeRevoluteJacobianDotVAnalytical(ui, vi, vj, pose(4:7), quatDot, velocity);
             testCase.verifyEqual(actSol, expSol, 'AbsTol', 7.5e-6);
         end
     end

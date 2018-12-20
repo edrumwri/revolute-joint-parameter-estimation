@@ -17,7 +17,7 @@ function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
     
     % Allocate space for forward differences calculations.
     col = length(pose);
-    fForward = zeros(5, col);
+    fForwardDiff = zeros(5, col);
     
     % Precompute the value for the constraints with no perturbance.
     fCurrent = computeRevoluteJointConstraints(ui, vi, vj, pose);
@@ -27,7 +27,8 @@ function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
         poseForward = pose;
         poseForward(i) =  poseForward(i) + eps;
         % Add result to forward f calculation.
-        fForward(:, i) = computeRevoluteJointConstraints(ui, vi, vj, poseForward);
+        fForward = computeRevoluteJointConstraints(ui, vi, vj, poseForward);
+        fForwardDiff(:, i) =  fForward - fCurrent;
     end
     
     % Extract the quaternion from pose.
@@ -36,6 +37,6 @@ function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
     
     % JRevNum * v = df/dq * dq/dt and dq/dt = N*v, therfore 
     % JRevNum * v = df/dq * N * v, making JRevNum = df/dq * N
-    JRevNum = (fForward - fCurrent) / eps * N;    
+    JRevNum = fForwardDiff / eps * N;    
 end
 

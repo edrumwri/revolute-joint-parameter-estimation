@@ -5,30 +5,21 @@ classdef TestcomputeRevoluteJacobianNum < matlab.unittest.TestCase
     end
     
     methods (Test)
-        function testComputationNoRotation(testCase)
-            % testComputationIdentity tests computation with identity rotation.
-            ui = [-1 -1 -1]'; 
-            pose = [1 0 0 1 0 0 0]';
-            vi = [0 1 0]'; 
-            vj = [0 1 0]';  
-            velocity = [1 2 3 4 5 6]';
-            actSol = computeRevoluteJacobianNum(ui, vi, vj, pose, 1e-6) * velocity;
-            [fRevolute, expSol] = computeRevoluteJointConstraints(ui, vi, vj, pose, velocity);
-            testCase.verifyEqual(actSol, expSol, 'AbsTol',6.5e-6);
-        end
-        
-        function testComputation90Rotation(testCase)
-            % testComputation90Rotation tests computation 90 degrees rotation
-            % around y axis.
+        function testNumericalVsAnalyticalJac(testCase)
+            % testNumericalVsAnalyticalJac compares the analytical jacobian
+            % with the numerical one for the revolute joint.
+            % This implicitly testes the spherical joint too as the
+            % revolute joint is a spherical one with two additional
+            % constraints. 
+            
             ui = [-1 -1 -1]'; 
             pose = [1 0 0 0.7071068 0 0.7071068 0]';
             vi = [0 1 0]'; 
             vj = [0 1 0]';  
-            velocity = [1 2 3 4 5 6]';
-            actSol = computeRevoluteJacobianNum(ui, vi, vj, pose, 1e-6) * velocity;
-            [fRevolute, expSol] = computeRevoluteJointConstraints(ui, vi, vj, pose, velocity);
-            testCase.verifyEqual(actSol, expSol, 'AbsTol', 5e-6);
-        end       
+            actSol = computeRevoluteJacobianNum(ui, vi, vj, pose,  1e-6); 
+            expSol = computeRevoluteJacobian(ui, vi, vj, pose(4:7));
+            testCase.verifyEqual(actSol, expSol, 'AbsTol', 1.5e-6);
+        end
     end
 end
 

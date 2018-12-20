@@ -1,11 +1,11 @@
 function JRev = computeRevoluteJacobian(ui, vi, vj, quat)
 % computeRevoluteJacobian analytical computation of the jacobian
 % for the revolute joint.
-%   The revolute constraint is f = vjw' * vxiw, where vxiw = wRi * vxi
-% \dot{f} = vjw' *  (\dot{wRi} * vxi)  
-%         = vjw' * w x (wRi * vxi)
-%         = vjw' * -(wRi * vxi) x w
-%         = vjw' * -skew(wRi * vxi) * w
+%   The revolute constraint is f = vjw' * vxw, where vxw = wRi * vxi
+%   \dot{f} = vjw' *  (\dot{wRi} * vxi)  
+%           = vjw' * w x (wRi * vxi)
+%           = vjw' * -(wRi * vxi) x w
+%           = vjw' * -skew(wRi * vxi) * w
 %   The revolute constraint derivation for vxi stands for either v1i or v2i.
 
 %   JRev = [eye(3)     -skew(wRi * ui); ...        % Spherical Jacobian
@@ -23,11 +23,11 @@ JSpherical = computeSphericalJacobian(ui, quat);
  
  wRi = qt2rot(quat);
  [v1i, v2i] = computeBasisFromAxis(vi);
- skew_v1iw = getSkewSymmetricMatrix(wRi * v1i);
- skew_v2iw = getSkewSymmetricMatrix(wRi * v2i);
+ skew_v1w = getSkewSymmetricMatrix(wRi * v1i );
+ skew_v2w = getSkewSymmetricMatrix(wRi * v2i);
  
  JRev = [JSpherical; ...
-         zeros(1,3) vj' * -skew_v1iw;...
-         zeros(1,3) vj' * -skew_v2iw];
+         zeros(1,3) vj' * -skew_v1w;...
+         zeros(1,3) vj' * -skew_v2w];
 end
 

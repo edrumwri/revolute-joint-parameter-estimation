@@ -29,18 +29,18 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
 %       return.
 
     quat = pose(4:7); % quaternion components
-    wRi = quat2R(quat);
+    wRi = qt2rot(quat);
     wRj = eye(3); % body j fixed to the world
     
     % Compute global vectors.
     viw = wRi * vi; 
     vjw = wRj * vj; 
 
-    [v1iw, v2iw] = computeBasisFromAxis(viw);
+    [v1w, v2w] = computeBasisFromAxis(viw);
     
     % Formulate the parallelism condition of the two vectors viw and vjw
     % v1iw' * vjw  = 0 and v2iw' * vjw = 0·
-    revoluteParallelVect = [v1iw' * vjw; v2iw' * vjw];
+    revoluteParallelVect = [v1w' * vjw; v2w' * vjw];
      
     fSpherical = computeSphericalJointConstraints(ui, pose);
     fRevolute = [fSpherical; revoluteParallelVect];
@@ -59,7 +59,7 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
         %         = vjw' * w x vxiw 
         % Derivation for vxi stands for either v1i or v2i.
         
-        fDotRevolute = [fDotSpherical; vjw' * cross(angularVel,v1iw); vjw' * cross(angularVel,v2iw)];
+        fDotRevolute = [fDotSpherical; vjw' * cross(angularVel,v1w); vjw' * cross(angularVel,v2w)];
         
         if exist('acceleration', 'var')
             [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity, acceleration);
@@ -71,8 +71,8 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
             % Derivation for vxi stands for either v1i or v2i.
              
             fDDotRevolute = [fDDotSpherical; ...
-               vjw' * cross(angularVelDot, v1iw) + vjw' * cross(angularVel, cross(angularVel, v1iw)); ...
-               vjw' * cross(angularVelDot, v2iw) + vjw' * cross(angularVel, cross(angularVel, v2iw))];
+               vjw' * cross(angularVelDot, v1w) + vjw' * cross(angularVel, cross(angularVel, v1w)); ...
+               vjw' * cross(angularVelDot, v2w) + vjw' * cross(angularVel, cross(angularVel, v2w))];
         end
     end       
 end

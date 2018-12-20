@@ -53,10 +53,10 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
     
         [fSpherical, fDotSpherical] = computeSphericalJointConstraints(ui, pose, velocity);
         % constraints for vxi (v1i and v2i) and vj vectors are in the form: 
-        % f = vjw' * vxiw, where vxiw = wRi * vxi
+        % f = vjw' * vxiw, where vxw = wRi * vxi
         % \dot{f} = vjw' *  (\dot{wRi} * vxi)  
         %         = vjw' * w x (wRi * vxi) 
-        %         = vjw' * w x vxiw 
+        %         = vjw' * w x vxw 
         % Derivation for vxi stands for either v1i or v2i.
         
         fDotRevolute = [fDotSpherical; vjw' * cross(angularVel,v1w); vjw' * cross(angularVel,v2w)];

@@ -23,7 +23,7 @@ function [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointCons
 
     x = pose(1:3); % position components
     quat = pose(4:7); % quaternion components
-    wRi = quat2R(quat);
+    wRi = qt2rot(quat);
     fSpherical = x + wRi * ui;
     
     fDotSpherical = zeros(3,1);

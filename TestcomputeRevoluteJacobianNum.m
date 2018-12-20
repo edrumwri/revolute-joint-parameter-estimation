@@ -18,7 +18,7 @@ classdef TestcomputeRevoluteJacobianNum < matlab.unittest.TestCase
             vj = [0 1 0]';  
             actSol = computeRevoluteJacobianNum(ui, vi, vj, pose,  1e-6); 
             expSol = computeRevoluteJacobian(ui, vi, vj, pose(4:7));
-            testCase.verifyEqual(actSol, expSol, 'AbsTol', 1e-6);
+            testCase.verifyEqual(actSol, expSol, 'AbsTol', 1.5e-6);
         end
     end
 end

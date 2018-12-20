@@ -14,10 +14,8 @@ function [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointCons
 %       If velocity is not provided then fDotSpherical will be zeros(3,1) on
 %       return.
 %   acceleration is a 6x1 OPTIONAL vector containing:
-%       translational accelerations: values 1:3 in the format \dot{vx}
-%       \dot{vy} \dot{vz}
-%       angular accelerations: values 4:6 in the format \dot{wx} \dot{wy}
-%       \dot{wz}
+%       translational accelerations: values 1:3 in the format \dot{vx} \dot{vy} \dot{vz}
+%       angular accelerations: values 4:6 in the format \dot{wx} \dot{wy} \dot{wz}
 %       If acceleration is not provided then fDDotSpherical will be zeros(3,1) on
 %       return.
 
@@ -27,7 +25,7 @@ function [fSpherical, fDotSpherical, fDDotSpherical] = computeSphericalJointCons
     fSpherical = x + wRi * ui;
     
     fDotSpherical = zeros(3,1);
-     fDDotSpherical = zeros(3,1);
+    fDDotSpherical = zeros(3,1);
     
     if exist('velocity', 'var')
         % the velocity is passed as an argument.

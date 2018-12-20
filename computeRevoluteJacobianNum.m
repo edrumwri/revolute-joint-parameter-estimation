@@ -27,7 +27,7 @@ function JRevNum = computeRevoluteJacobianNum(ui, vi, vj, pose, eps)
         poseForward = pose;
         poseForward(i) =  poseForward(i) + eps;
         % Add result to forward f calculation.
-        fForward = computeRevoluteJointConstraints(ui, vi, vj, poseForward)
+        fForward = computeRevoluteJointConstraints(ui, vi, vj, poseForward);
         fForwardDiff(:, i) =  fForward - fCurrent;
     end
     

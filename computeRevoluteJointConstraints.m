@@ -32,14 +32,15 @@ function [fRevolute, fDotRevolute, fDDotRevolute] = computeRevoluteJointConstrai
     wRi = qt2rot(quat);
     wRj = eye(3); % body j fixed to the world
     
+    %compute basis vectors vro vi in the i local frame
+    [v1i, v2i] = computeBasisFromAxis(vi);
     % Compute global vectors.
-    viw = wRi * vi; 
-    vjw = wRj * vj; 
-
-    [v1w, v2w] = computeBasisFromAxis(viw);
+    vjw = wRj * vj;
+    v1w = wRi * v1i;
+    v2w = wRi * v2i;
     
     % Formulate the parallelism condition of the two vectors viw and vjw
-    % v1iw' * vjw  = 0 and v2iw' * vjw = 0·
+    % v1w' * vjw  = 0 and v2w' * vjw = 0·
     revoluteParallelVect = [v1w' * vjw; v2w' * vjw];
      
     fSpherical = computeSphericalJointConstraints(ui, pose);

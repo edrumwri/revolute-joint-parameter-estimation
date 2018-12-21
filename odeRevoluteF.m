@@ -6,15 +6,15 @@ function dydt = odeRevoluteF(init, mass, Ji, ui, vi, vj)
 %   velocity: as 
 %       linear velocity: init(8:10) vx vy vz
 %       angulat velocity: init(11:13) wx wy wz
-%   mass represent the mass at the joint
-%   Ji is the moment of inertia tensor for a hollow sphere of radius r and
-%   mass m.
-%   ui is a 3x1 vector from the center-of-mass of body i to the revolute 
-%       joint location and expressed in the body i frame 
+%   mass represents the mass at the joint
+%   Ji is the moment of inertia tensor (in the link i frame) for a hollow 
+%       sphere of radius r and mass m.
+%   ui is a 3x1 vector from the center-of-mass of link i to the revolute 
+%       joint location and expressed in the i frame (link i is not fixed to the world). 
 %   vi is a 3x1 unit vector that points along the axis of the revolute joint 
-%       expressed in the body i frame.
+%       expressed in the i frame (link i is not fixed to the world). 
 %   vj is a 3x1 unit vector that points along the axis of the revolute joint 
-%       expressed in the body j frame (fixed to the world).
+%       expressed in the j frame (fixed to the world).
    
     % extract the quaternion qw qx qy qz
     quat = init(4:7);
@@ -26,14 +26,14 @@ function dydt = odeRevoluteF(init, mass, Ji, ui, vi, vj)
     velocity = [linearVel; angularVel ]; 
     
     
-    [F, M] = computeActingForces(mass, Ji, quat, angularVel);
+    [F, M] = computeActingForcesAndInertia(mass, Ji, quat, angularVel);
    
     quatDot = computeQuatDot(quat, angularVel);
     
     pose = init(1:7);
      
     G = computeRevoluteJacobian(ui, vi, vj, pose);
-    GdotV = computeRevoluteJacobianDotVAnalytical(ui, vi, vj, quat, quatDot, velocity);
+    GdotVel = computeRevoluteJacobianDotVAnalytical(ui, vi, vj, quat, quatDot, velocity);
     % The dynamic equations are:
     % M * \dot{vel} - G' * lambda = F
     % G * \dot{vel}  = - \dot{G} * vel
@@ -43,7 +43,7 @@ function dydt = odeRevoluteF(init, mass, Ji, ui, vi, vj)
     %             
     
     A = [M -G'; G zeros(5)];
-    b = [F; -GdotV];
+    b = [F; -GdotVel];
     
     x = b\A;
     

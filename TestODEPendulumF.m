@@ -1,5 +1,5 @@
-classdef TestOdeRevoluteF < matlab.unittest.TestCase
-    % TestOdeRevoluteF unit testing for odeRevoluteF
+classdef TestODEPendulumF < matlab.unittest.TestCase
+    % TestODEPendulumF unit testing for odePendulumF
     
     properties
     end
@@ -17,7 +17,7 @@ classdef TestOdeRevoluteF < matlab.unittest.TestCase
             J = getHollowSphereInertiaTensor(mass, sphere_radius);
             init = [0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0];
 
-            actSol = odeRevoluteF(init, mass, J, ui, vi, vj);
+            actSol = odePendulumF(init, mass, J, ui, vi, vj);
             expSol = zeros(13,1);
             testCase.verifyEqual(actSol, expSol, 'AbsTol', sqrt(eps));
         end 
@@ -35,7 +35,7 @@ classdef TestOdeRevoluteF < matlab.unittest.TestCase
             pose = [0 0 0 0.7071068 0 0.7071068 0]';
             velocity = [0 0 0 0 0 0]';
             init = [pose; velocity];
-            dfdt = odeRevoluteF(init, mass, J, ui, vi, vj);
+            dfdt = odePendulumF(init, mass, J, ui, vi, vj);
             vdot = dfdt(8:13);
             actSol = norm(vdot);
             expSol = 9.8;

@@ -4,16 +4,16 @@ sphere_radius = 3;
 
 % Moment of inertia tensor for a hollow sphere of radius r and mass m
 Ji = getHollowSphereInertiaTensor(mass, sphere_radius);
-%   ui is a 3x1 vector from the center-of-mass of link i to the revolute 
-%       joint location and expressed in the i frame (link i is not fixed to the world). 
-%   vi is a 3x1 unit vector that points along the axis of the revolute joint 
-%       expressed in the i frame (link i is not fixed to the world). 
+%   ub is a 3x1 vector from the center-of-mass of the bob to the revolute 
+%       joint location and expressed in the bob frame. 
+%   vb is a 3x1 unit vector that points along the axis of the revolute joint 
+%       expressed in the bob frame. 
 %   vj is a 3x1 unit vector that points along the axis of the revolute joint 
 %       expressed in the j frame (fixed to the world).
 
-ui = [-1; 0; 0];
-vi = [0; 1; 0];
-vj = [0; 1; 0];
+ub = [-1; 0; 0];
+vb = [0; 0; 1];
+vj = [0; 0; 1];
 
 % y0rev is the initial conditions 13 x 1 vector containing:
 %   position: y0rev(1:3) as x y z
@@ -23,10 +23,10 @@ vj = [0; 1; 0];
 %       angulat velocity: y0rev(11:13) wx wy wz
 y0rev = [0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0];
 
-tspan = [0;10];
+tspan = [0;100];
 
-[t,y3Drev] = ode45(@(t,y)odeRevoluteF(y, mass, Ji, ui, vi, vj), tspan, y0rev);
+[t,y3Drev] = ode45(@(t,y)odePendulumF(y, mass, Ji, ub, vb, vj), tspan, y0rev);
 % Plot the resulting motion of the joint
-plot(y3Drev(1,:),y3Drev(2,:))
+plot(y3Drev(:,1),y3Drev(:,2))
 xlabel('X') 
 ylabel('Y') 

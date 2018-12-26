@@ -5,8 +5,8 @@ function dydt = odePendulumF(init, mass, Jb, ub, vi, vj)
 %   position: init(1:3) as x y z
 %   orientation: init(4:7) as quaternion qw qx qy qz
 %   velocity: as 
-%       linear velocity: init(8:10) vx vy vz
-%       angulat velocity: init(11:13) wx wy wz
+%       linear velocity: init(8:10) vx vy vz expressed in the global frame.
+%       angular velocity: init(11:13) wx wy wz expressed in the global frame.
 %   mass represents the mass of the body.
 %   Jb is the moment of inertia tensor, expressed in the pendulum bob frame
 %   for a hollow sphere of radius r and mass m.

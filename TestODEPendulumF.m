@@ -10,16 +10,20 @@ classdef TestODEPendulumF < matlab.unittest.TestCase
             mass = 0;
             sphere_radius = 1;
             ui = [-1; 0; 0];
-            vi = [0; 1; 0];
-            vj = [0; 1; 0];
+            vb = [0; 0; 1];
+            vj = [0; 0; 1];
 
             % Moment of inertia tensor for a hollow sphere of radius r and mass m
             J = getHollowSphereInertiaTensor(mass, sphere_radius);
-            init = [0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0];
-
-            actSol = odePendulumF(init, mass, J, ui, vi, vj);
-            expSol = zeros(13,1);
-            testCase.verifyEqual(actSol, expSol, 'AbsTol', sqrt(eps));
+            init = [1; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0];
+            pose = init(1:7);
+            if validStartState(pose, ub, vb, vj)
+                actSol = odePendulumF(init, mass, J, ui, vb, vj);
+                expSol = zeros(13,1);
+                testCase.verifyEqual(actSol, expSol, 'AbsTol', sqrt(eps));
+            else
+                error('TestODEPendulumF:testAtRest:ConstraintsNotMeet','Initial conditions are not valid.'); 
+            end
         end 
         
         function test90Rotation(testCase)
@@ -27,19 +31,22 @@ classdef TestODEPendulumF < matlab.unittest.TestCase
             mass = 1;
             sphere_radius = 1;
             ui = [-1; 0; 0];
-            vi = [0; 1; 0];
-            vj = [0; 1; 0];
-
+            vb = [0; 0; 1];
+            vj = [0; 0; 1];
             % Moment of inertia tensor for a hollow sphere of radius r and mass m
             J = getHollowSphereInertiaTensor(mass, sphere_radius);
-            pose = [0 0 0 0.7071068 0 0.7071068 0]';
+            pose = [1 0 0 0.7071068 0 0.7071068 0]';
             velocity = [0 0 0 0 0 0]';
             init = [pose; velocity];
-            dfdt = odePendulumF(init, mass, J, ui, vi, vj);
-            vdot = dfdt(8:13);
-            actSol = norm(vdot);
-            expSol = 9.8;
-            testCase.verifyEqual(actSol, expSol, 'AbsTol', sqrt(eps));
+            if validStartState(pose, ub, vb, vj)
+                dfdt = odePendulumF(init, mass, J, ui, vb, vj);
+                vdot = dfdt(8:13);
+                actSol = norm(vdot);
+                expSol = 9.8;
+                testCase.verifyEqual(actSol, expSol, 'AbsTol', sqrt(eps));
+            else
+                error('TestODEPendulumF:test90Rotation:ConstraintsNotMeet','Initial conditions are not valid.'); 
+            end
         end 
     end
 end

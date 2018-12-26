@@ -21,12 +21,17 @@ vj = [0; 0; 1];
 %   velocity: as 
 %       linear velocity: y0rev(8:10) vx vy vz
 %       angulat velocity: y0rev(11:13) wx wy wz
-y0rev = [0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0];
+y0rev = [1; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0];
 
-tspan = [0;100];
-
-[t,y3Drev] = ode45(@(t,y)odePendulumF(y, mass, Ji, ub, vb, vj), tspan, y0rev);
-% Plot the resulting motion of the joint
-plot(y3Drev(:,1),y3Drev(:,2))
-xlabel('X') 
-ylabel('Y') 
+% Test constraints.
+pose = y0rev(1:7);
+if validStartState(pose, ub, vb, vj)  
+    tspan = [0;100];
+    [t,y3Drev] = ode45(@(t,y)odePendulumF(y, mass, Ji, ub, vb, vj), tspan, y0rev);
+    % Plot the resulting motion of the joint
+    plot(y3Drev(:,1),y3Drev(:,2))
+    xlabel('X') 
+    ylabel('Y') 
+else
+    error('simulatePendulum:ConstraintsNotMeet','Initial conditions are not valid.'); 
+end

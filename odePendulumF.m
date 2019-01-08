@@ -6,7 +6,7 @@ function dydt = odePendulumF(init, mass, Jb, ub, vi, vj)
 %   orientation: init(4:7) as quaternion qw qx qy qz
 %   velocity: as 
 %       linear velocity: init(8:10) vx vy vz expressed in the global frame.
-%       angular velocity: init(11:13) wx wy wz expressed in the global frame.
+%       angular velocity: init(11:13) wx wy wz expressed in the globalframe.
 %   mass represents the mass of the body.
 %   Jb is the moment of inertia tensor, expressed in the pendulum bob frame
 %   for a hollow sphere of radius r and mass m.
@@ -24,16 +24,14 @@ function dydt = odePendulumF(init, mass, Jb, ub, vi, vj)
     % Angular velocity wx wy wz
     angularVel = init(11:13);
     % Velocity vector: containing linear and angular 
-    velocity = [linearVel; angularVel ]; 
+    velocity = [linearVel; angularVel]; 
     
     
     [F, M] = computeActingForcesAndGeneralizedInertia(mass, Jb, quat, angularVel);
    
     quatDot = computeQuatDot(quat, angularVel);
-    
-    pose = init(1:7);
      
-    G = computeRevoluteJacobian(ub, vi, vj, pose);
+    G = computeRevoluteJacobian(ub, vi, vj, quat);
     GdotVel = computeRevoluteJacobianDotVAnalytical(ub, vi, vj, quat, quatDot, velocity);
     % The dynamic equations are:
     % M * \dot{velocity} - G' * lambda = F
@@ -46,10 +44,10 @@ function dydt = odePendulumF(init, mass, Jb, ub, vi, vj)
     A = [M -G'; G zeros(5)];
     b = [F; -GdotVel];
     
-    x = b\A;
+    x = pinv(A) * b;
     
     xdot = linearVel;
-    vdot = x(1:6)';
+    vdot = x(1:6);
     %return the results
       dydt = [xdot; quatDot; vdot];
 

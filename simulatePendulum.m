@@ -1,6 +1,6 @@
 
-mass = 10;
-sphere_radius = 3;
+mass = 1;
+sphere_radius = 0; % when radius is zero we 
 
 % Moment of inertia tensor for a hollow sphere of radius r and mass m
 Ji = getHollowSphereInertiaTensor(mass, sphere_radius);
@@ -26,7 +26,7 @@ y0rev = [1; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0];
 % Test constraints.
 pose = y0rev(1:7);
 if validStartState(pose, ub, vb, vj)  
-    tspan = [0;100];
+    tspan = [0;15];
     [t,y3Drev] = ode45(@(t,y)odePendulumF(y, mass, Ji, ub, vb, vj), tspan, y0rev);
     % Plot the resulting motion of the joint
     plot(y3Drev(:,1),y3Drev(:,2))

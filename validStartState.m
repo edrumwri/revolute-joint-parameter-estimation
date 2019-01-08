@@ -1,4 +1,4 @@
-function boolean = validStartState(pose, ub, vb, vj)
+function boolean = validStartState(pose, ub, vb, vj, tol)
 % validStartState tests if the inital configuration of the pendulum is valid. 
 %       retuns boolean true or false. 
 %   pose is a 7x1 vector representing the:
@@ -10,15 +10,25 @@ function boolean = validStartState(pose, ub, vb, vj)
 %       expressed in the bob frame. 
 %   vj is a 3x1 unit vector that points along the axis of the revolute joint 
 %       expressed in the j frame (fixed to the world).
+%   tol is the optional scalar tolerance. If not present tolerance is 0. 
   
     position = pose(1:3);
     quat = pose(4:7);
     wRb = qt2rot(quat);
     constraints = [position + wRb * ub; cross(vb,vj)];
-    if all(constraints(:) == 0)
-      boolean = 1; 
+    if exist('tol', 'var')
+        if all(constraints(:) < tol)
+          % constraints values within the numerical tolerance
+          boolean = true;
+        else
+          boolean = false;
+        end
     else
-      boolean = 0;
+        if all(constraints(:) == 0)
+          boolean = true; 
+        else
+          boolean = false; 
+        end
     end
 end
 

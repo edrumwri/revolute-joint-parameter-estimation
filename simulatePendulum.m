@@ -1,6 +1,6 @@
 
 mass = 1;
-sphere_radius = 0; % when radius is zero we 
+sphere_radius = 1; % if radius is 0 we are simulating a point mass
 
 % Moment of inertia tensor for a hollow sphere of radius r and mass m
 Ji = getHollowSphereInertiaTensor(mass, sphere_radius);
@@ -16,7 +16,7 @@ vb = [0; 0; 1];
 vj = [0; 0; 1];
 
 % Variable that defines the initial state of the pendulum. If not at rest 
-% the pendulum starts from a horizontal position (90 degrees with the
+% the pendulum drops from a horizontal position (90 degrees with the
 % vertical).
 atRest = 0; 
 

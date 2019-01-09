@@ -19,7 +19,7 @@ classdef TestODEPendulumF < matlab.unittest.TestCase
             orientation = [1 0 0 0]';
             pose = [position; orientation];
             linearVel = zeros(3,1);
-            angularVel = [0 0 1]';
+            angularVel = [0 0 0]'; 
             velocity = [linearVel; angularVel];
             init = [pose; velocity];
             % Moment of inertia tensor for a hollow sphere of radius r and mass m
@@ -38,7 +38,7 @@ classdef TestODEPendulumF < matlab.unittest.TestCase
         end
         
         function testPendulumAtRest(testCase)
-            % The pendulum is horizontal (90 with the vertical axis). 
+            % The pendulum is vertical (0 with the vertical axis). 
             mass = 1;
             sphere_radius = 0;
             ub = [-1; 0; 0];

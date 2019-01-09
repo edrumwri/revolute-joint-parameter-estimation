@@ -29,7 +29,7 @@ else
     position = [1 0 0]';
     orientation = [1 0 0 0]';
     linearVel = zeros(3,1);
-    angularVel = [0 0 1]';
+    angularVel = [0 0 0]';
 end
 
 % y0rev is the initial conditions 13 x 1 vector containing:

@@ -11,6 +11,6 @@ function [F, M] = computeActingForcesAndGeneralizedInertia(mass, Jb, quat, angul
  wRb = qt2rot(quat);
  RJRt = wRb * Jb * wRb';
  
- F = [-mass * g; 0; 0; 0; 0; 0] - [0; 0; 0; cross(angularVel, RJRt * angularVel)];
+ F = [0; -mass * g; 0; 0; 0; 0] - [0; 0; 0; cross(angularVel, RJRt * angularVel)];
  M = [eye(3) * mass zeros(3); zeros(3)  RJRt];
 end

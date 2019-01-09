@@ -49,7 +49,7 @@ function dydt = odePendulumF(init, mass, Jb, ub, vi, vj)
     xdot = linearVel;
     vdot = x(1:6);
     %return the results
-      dydt = [xdot; quatDot; vdot];
+    dydt = [xdot; quatDot; vdot];
 
 end
 

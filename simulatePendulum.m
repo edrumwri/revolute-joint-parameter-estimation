@@ -18,7 +18,7 @@ vj = [0; 0; 1];
 % Variable that defines the initial state of the pendulum. If not at rest 
 % the pendulum starts from a horizontal position (90 degrees with the
 % vertical).
-atRest = 1; 
+atRest = 0; 
 
 if atRest
    position = [0 -1 0]';
@@ -51,6 +51,11 @@ if validStartState(pose, ub, vb, vj, 1e-16)
     xlabel('X') 
     ylabel('Y') 
     axis equal;
+    if atRest
+        title("Bob started from at rest position");
+    else
+        title("Bob started from horizontal position");
+    end        
 else
     error('simulatePendulum:ConstraintsNotMeet','Initial conditions are not valid.'); 
 end

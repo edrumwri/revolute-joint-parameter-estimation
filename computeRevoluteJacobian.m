@@ -7,7 +7,6 @@ function JRev = computeRevoluteJacobian(ui, vi, vj, quat)
 %           = vjw' * -(wRi * vxi) x w
 %           = vjw' * -skew(wRi * vxi) * w
 %   The revolute constraint derivation for vxi stands for either v1i or v2i.
-
 %   JRev = [eye(3)     -skew(wRi * ui); ...        % Spherical Jacobian
 %           zeros(1,3) vjw' * -skew(wRi * v1i); ...
 %           zeros(1,3) vjw' * -skew(wRi * v2i)]

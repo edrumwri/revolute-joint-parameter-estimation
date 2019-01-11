@@ -7,9 +7,15 @@ classdef TestODEPendulumF < matlab.unittest.TestCase
     methods (Test)
         % For all these methods the system of coordinates is: 
         % +x to the right, +y up, +z out of the page.
+        %   ub is a 3x1 vector from the center-of-mass of the bob to the revolute 
+        %       joint location and expressed in the bob frame. 
+        %   vb is a 3x1 unit vector that points along the axis of the revolute joint 
+        %       expressed in the bob frame. 
+        %   vj is a 3x1 unit vector that points along the axis of the revolute joint 
+        %       expressed in the j frame (fixed to the world).
         
         function testPendulumFromHorizontal(testCase)
-            % The pendulum is horizontal (90 with the vertical axis). 
+            % The pendulum is horizontal (the bob lies on +x). 
             mass = 1;
             sphere_radius = 0;
             ub = [-1; 0; 0];

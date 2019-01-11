@@ -44,7 +44,7 @@ function dydt = odePendulumF(init, mass, Jb, ub, vi, vj)
     A = [M -G'; G zeros(5)];
     b = [F; -GdotVel];
     
-    x = A\b; % use pinv(A) * b if radius is 0.
+    x = A\b;
     
     xdot = linearVel;
     vdot = x(1:6);
